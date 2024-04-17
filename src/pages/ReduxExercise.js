@@ -1,17 +1,23 @@
 import React from "react";
-import { Container, Button, Typography, Box, Grid } from "@mui/material"
+import { Container, Button, Typography, Box, Grid } from "@mui/material";
 import productOne from "../images/product1.gif";
 import productTwo from "../images/product2.gif";
 import ReactJson from "react-json-view";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import WrapperBox from "../components/WrapperBox";
-
+import { addToCart, removeCart } from "../service/cart/slice";
 const RootComponent = (props) => {
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         RootComponent {`({`}
-        <Box component="span" sx={{ color: "warning.main" }}>{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
       </Typography>
       <Grid container spacing={2} p="1rem">
@@ -29,9 +35,15 @@ const RootComponent = (props) => {
 const ProductPage = (props) => {
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         Product Page {`({`}
-        <Box component="span" sx={{ color: "warning.main" }}>{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
       </Typography>
       <Grid container spacing={2} p="1rem">
@@ -47,15 +59,21 @@ const ProductPage = (props) => {
 };
 
 const CartPage = (props) => {
+  const totalPrice = useSelector((state) => state.cart.totalPrice);
   // Step 6
   // Replace the line below to get data of the second product from state.cart.totalPrice
-  const totalPrice = "...";
 
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         Cart Page {`({`}
-        <Box component="span" sx={{ color: "warning.main" }}>{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
       </Typography>
       <Grid container spacing={2} p="1rem">
@@ -66,7 +84,9 @@ const CartPage = (props) => {
           <CartProductTwo />
         </Grid>
         <Grid item xs={12}>
-          <Typography p="0.5rem" variant="h5">Total Price: 💵 {totalPrice}</Typography>
+          <Typography p="0.5rem" variant="h5">
+            Total Price: 💵 {totalPrice}
+          </Typography>
         </Grid>
       </Grid>
     </WrapperBox>
@@ -74,10 +94,12 @@ const CartPage = (props) => {
 };
 
 const ProductOne = (props) => {
+  const product = useSelector((state) => state.product[0]);
+
   // Step 4
   // Replace the line below to get data of the first product from state.product
   // You should see the price is updated
-  const product = { id: "...", title: "...", price: "..." };
+  // const product = { id: "...", title: "...", price: "..." };
 
   // Step 7
   // Define: const dispatch = useDispatch();
@@ -94,58 +116,90 @@ const ProductOne = (props) => {
 
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         {product.title} {`({`}
-        <Box component="span" sx={{ color: "warning.main" }}>{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
-      </Typography >
+      </Typography>
       <Grid container justifyContent="center">
         <Grid item xs={8}>
           <img src={productOne} alt="Product One" width="100%" />
-          <Typography p="0.5rem" variant="h6" sx={{ color: "success.main" }}>💵 {product.price}</Typography>
+          <Typography p="0.5rem" variant="h6" sx={{ color: "success.main" }}>
+            💵 {product.price}
+          </Typography>
         </Grid>
-        <Grid item xs={8} >
+        <Grid item xs={8}>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Button variant="success" sx={{ width: "5rem" }}>
+            <Button
+              onClick={() => dispatch(addToCart(product))}
+              variant="success"
+              sx={{ width: "5rem" }}
+            >
               Add
             </Button>
-            <Button variant="error" sx={{ width: "5rem" }}>
+            <Button
+              onClick={() => dispatch(removeCart(product))}
+              variant="error"
+              sx={{ width: "5rem" }}
+            >
               Remove
             </Button>
           </div>
         </Grid>
       </Grid>
-    </WrapperBox >
+    </WrapperBox>
   );
 };
 
 const ProductTwo = (props) => {
+  const product = useSelector((state) => state.product[1]);
   // Step 5
   // Replace the line below to get data of the second product from state.product
   // You should see the price is updated
-  const product = { id: "...", title: "...", price: "..." };
+  const dispatch = useDispatch();
 
-  // Step 9
   // Repeat step 7 and 8 for this component
 
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         {product.title} {`({`}
-        <Box component="span" sx={{ color: "warning.main" }}>{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
       </Typography>
       <Grid container justifyContent="center">
         <Grid item xs={8}>
           <img src={productTwo} alt="Product Two" width="100%" />
-          <Typography p="0.5rem" variant="h5" sx={{ color: "success.main" }}>💵 {product.price}</Typography>
+          <Typography p="0.5rem" variant="h5" sx={{ color: "success.main" }}>
+            💵 {product.price}
+          </Typography>
         </Grid>
-        <Grid item xs={8} >
+        <Grid item xs={8}>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Button variant="success" sx={{ width: "5rem" }}>
+            <Button
+              onClick={() => dispatch(addToCart(product))}
+              variant="success"
+              sx={{ width: "5rem" }}
+            >
               Add
             </Button>
-            <Button variant="error" sx={{ width: "5rem" }}>
+            <Button
+              onClick={() => dispatch(removeCart(product))}
+              variant="error"
+              sx={{ width: "5rem" }}
+            >
               Remove
             </Button>
           </div>
@@ -156,22 +210,34 @@ const ProductTwo = (props) => {
 };
 
 const CartProductOne = (props) => {
+  const product = useSelector((state) => state.cart.products[0]);
+
   // Step 2
   // Replace the line below to get data of the first product from state.cart.products
   // Change the price of products in `service/cart/slice.js` to see the effect
-  const product = { price: "...", qty: "..." };
+  // const product = { price: "...", qty: "..." };
 
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         CartProduct 1 {`({`}
-        <Box component="span" sx={{ color: "warning.main" }} >{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
       </Typography>
       <Container fluid="true">
-        <Box >
-          <Typography p="0.5rem" variant="h6">Quantity: {product.qty}</Typography>
-          <Typography p="0.5rem" variant="h6">Price: 💵 {product.price}</Typography>
+        <Box>
+          <Typography p="0.5rem" variant="h6">
+            Quantity: {product.qty}
+          </Typography>
+          <Typography p="0.5rem" variant="h6">
+            Price: 💵 {product.price}
+          </Typography>
         </Box>
       </Container>
     </WrapperBox>
@@ -179,40 +245,59 @@ const CartProductOne = (props) => {
 };
 
 const CartProductTwo = (props) => {
+  const product = useSelector((state) => state.cart.products[1]);
+
   // Step 3
   // Replace the line below to get data of the second product from state.cart.products
   // Change the price of products in `service/cart/slice.js` to see the effect
-  const product = { price: "...", qty: "..." };
+  // const product = { price: "...", qty: "..." };
 
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         CartProduct 2 {`({`}
-        <Box component="span" sx={{ color: "warning.main" }}>{Object.keys(props).join(", ")}</Box>
+        <Box component="span" sx={{ color: "warning.main" }}>
+          {Object.keys(props).join(", ")}
+        </Box>
         {`})`}
-      </Typography >
+      </Typography>
       <Box>
-        <Typography p="0.5rem" variant="h6">Quantity: {product.qty}</Typography>
-        <Typography p="0.5rem" variant="h6">Price: 💵 {product.price}</Typography>
+        <Typography p="0.5rem" variant="h6">
+          Quantity: {product.qty}
+        </Typography>
+        <Typography p="0.5rem" variant="h6">
+          Price: 💵 {product.price}
+        </Typography>
       </Box>
     </WrapperBox>
   );
 };
 
 const Store = (props) => {
+  const product = useSelector((state) => state.product);
+  const cart = useSelector((state) => state.cart);
+
   // Step 1
   // use useSelector() to get the data of products and cart in the store
   // pass {cart, product} to the src attribute of the component <ReactJson/>
 
   return (
     <WrapperBox>
-      <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
+      <Typography
+        p="0.5rem"
+        variant="h5"
+        sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}
+      >
         Store
       </Typography>
       <Box sx={{ textAlign: "start" }}>
         <ReactJson
           name="store"
-          src={{}}
+          src={{ cart, product }}
           theme="monokai"
           displayDataTypes={false}
           displayObjectSize={false}
