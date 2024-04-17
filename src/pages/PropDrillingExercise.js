@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Button, Typography, Box, Grid } from "@mui/material";
 import productOne from "../images/product1.gif";
 import productTwo from "../images/product2.gif";
@@ -47,12 +47,6 @@ const RootComponent = (props) => {
     updatedCart.totalPrice += newProduct.price;
     setCart(updatedCart);
   }
-
-  useEffect(() => {
-    const newProduct = { id: "p1", title: "Product 1", price: 1999 };
-    addProductToCart(products[0]);
-  }, []);
-  console.log(cart);
 
   // Step 2
   // Write a function called removeProductFromCart() that takes a product object as an argument
